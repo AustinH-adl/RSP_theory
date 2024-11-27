@@ -12,7 +12,8 @@ Node::Node(int key) {
 
 Node* Node::insert(Node* root, int key) {
     if (root == nullptr) {
-        return new Node(key);
+        Node* newnode = new Node(key);
+        return newnode;
     }
 
     if (root->item == key)
@@ -25,9 +26,53 @@ Node* Node::insert(Node* root, int key) {
     }
     
     return root;
+}
+Node* Node::Search(Node* root, int key) {
+    if(root == nullptr)
+        return nullptr;
+
+    if(root->item == key)
+        return root;
+
+    if(root->item > key)
+        return Search(root->left, key);
+    else
+        return Search(root->right, key);
+}
+
+Node* Node::Delete(Node* root, int key) {
+    if (root == nullptr)
+        return root;
+    
+    if(root->item > key) {
+        root->left = Delete(root->left, key);
+    } else if(root->item < key) {
+        root->right = Delete(root->right, key);
+    }
+
+    else { // Case if item == key
+        if(root->left == nullptr) {
+            Node* del = root->right;
+            delete root;
+            return del;
+        }
+
+        if(root->right == nullptr) {
+            Node* del = root->left;
+            delete root;
+            return del;
+        }
+
+        // Returns if either right or left node are null
+        // Continues if both arent
+        Node* successor = root->right;
+        while (successor != NULL && successor->left != NULL)
+            successor = successor->left;
+        root->item = successor->item;
+        root->right = Delete(root->right, successor->item);
+    }
+    return root;
 };
-
-
 
 Tree::Tree(int key) {
     root = new Node(key);
@@ -35,6 +80,17 @@ Tree::Tree(int key) {
 
 void Tree::insert(int key) {
     root = root->insert(root, key);
+}
+
+bool Tree::search(int key)
+{
+    if(root->Search(this->root, key) != nullptr)
+        return true;
+    return false;
+}
+
+void Tree::del(int key) {
+    root->Delete(root, key);
 }
 
 void Tree::printInOrder(Node* node) {
@@ -103,4 +159,10 @@ void Tree::PostOrder() {
 
 void Tree::PreOrder() {
     printPreOrder(root);
+}
+
+Tree::~Tree() {
+    while(root!=nullptr) {
+        root->Delete(root, root->item);
+    }
 }

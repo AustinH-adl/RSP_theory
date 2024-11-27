@@ -2,12 +2,15 @@
 
 class Node {
     public:
-    int item;
-    Node* parent;
-    Node* left;
-    Node* right;
-    Node(int key);
-    Node* insert(Node* root, int key);
+        int item;
+        Node* parent;
+        Node* left;
+        Node* right;
+        Node(int key);
+        Node* inorderchild(Node* node);
+        Node* insert(Node* root, int key);
+        Node* Search(Node* root, int key);
+        Node* Delete(Node* root, int key);
 };
 
 class Tree {
@@ -20,9 +23,12 @@ class Tree {
     public:
         Tree(int key);
         void insert(int key);
+        bool search(int key);
+        void del(int key);
 
         void InOrder();
         void LevelOrder();
         void PostOrder();
         void PreOrder();
+        ~Tree();
 };
