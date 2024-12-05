@@ -1,12 +1,11 @@
+#pragma once
 #include <vector>
 
 class Edge {
     friend class AdjacencyList;
-    private:
+    public:
         int weight;
         int virtex;
-
-    public:
         Edge(int virtex);
         Edge(int virtex, int weight);
 };
@@ -20,6 +19,8 @@ class AdjacencyList {
     public:
         AdjacencyList();
         AdjacencyList(bool direct);
+        std::vector<Edge*> getlist(int node);
+        int getnodes();
         bool AddEdge(int start, int end, bool directed);
         void AddVirtex();
         void AddVirtex(int num);

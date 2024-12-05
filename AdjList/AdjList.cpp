@@ -2,13 +2,26 @@
 #include <iostream>
 
 AdjacencyList::AdjacencyList() {
-    nvertices = -1;
+    nvertices = 0;
     directed = false;
 }
 
 AdjacencyList::AdjacencyList(bool direct) {
     this->directed = direct;
-    nvertices = -1;
+    nvertices = 0;
+}
+
+std::vector<Edge *> AdjacencyList::getlist(int node)
+{
+    if(node < nvertices)
+        return edges[node];
+    
+    return {};
+}
+
+int AdjacencyList::getnodes()
+{
+    return nvertices;
 }
 
 bool AdjacencyList::AddEdge(int start, int end, bool directed) {
@@ -16,6 +29,7 @@ bool AdjacencyList::AddEdge(int start, int end, bool directed) {
         return false;
     } else {
         edges[start].push_back(new Edge(end));
+        
         if(!directed) {
             edges[end].push_back(new Edge(start));
         }
@@ -52,10 +66,9 @@ void AdjacencyList::PrintGraph() {
 }
 
 AdjacencyList::~AdjacencyList() {
-    for(std::vector<Edge*> list : edges) {
-        for(Edge* edge : list) {
-            delete edge;
-        }
+    for(auto list : edges) {
+        list.clear();
+        list.shrink_to_fit();
     }
 }
 
